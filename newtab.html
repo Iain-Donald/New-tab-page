@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es"> <!--Viva México-->
+<head>
+    <meta charset="utf-8">
+    <title>New tab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body { 
+            height:100%;
+            margin:0;
+            background:#1a1b1f;
+            color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            font-family: monospace;
+        }
+        .thisIsTheMiddleOfThePageAndIncreasesTheAestheticAppeal {
+            padding: 10px;
+            background: #2a2a2a;
+            box-shadow: 11px 11px 0 0 #000000;
+        }
+        form { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        input[type=text]{
+            background: #000000;
+            color: #ffffff;
+            border: 1px solid #333;
+            font: inherit;
+            font-size: 1.5rem;
+            padding: 0.4rem 0.6rem;
+            width: 28rem; 
+            outline:none;
+        }
+        input[type=text]:focus {
+            border-color:#6a6a6a;
+        }
+        .radios {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 1rem;
+            color: #888888;
+        }
+        .radios label{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class = "thisIsTheMiddleOfThePageAndIncreasesTheAestheticAppeal">
+        <form onsubmit="return go(this)">
+            <input type="text" name="q" autofocus autocomplete="off" spellcheck="false">
+            <div class="radios">
+                <label><input type="radio" name="s" value="a"> ab</label>
+                <br>
+                <label><input type="radio" name="s" value="g" checked> g</label>
+                <label><input type="radio" name="s" value="w"> w</label>
+            </div>
+        </form>
+    </div>
+    <script>
+        function go(f){
+            var v = f.q.value.trim();
+            if (!v) return false;
+            var t = encodeURIComponent(v);
+            if (f.s.value == 'a')
+                location = v.indexOf('://') > 0 ? v : 'https://' + v;
+            //if (f.s.value == 'a') 
+            //    location = v;
+            else if (f.s.value == 'w')
+                location = 'https://en.wikipedia.org/w/index.php?search=' + t;
+            else
+                location = 'https://www.google.com/search?q=' + t;
+            
+            return false;
+        }
+    </script>
+</body>
+</html>
