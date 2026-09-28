@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es"> <!--Viva México-->
+<head>
+    <meta charset="utf-8">
+    <title>New tab</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        html, body { 
+            height:100%;
+            margin:0;
+            background:#1a1b1f;
+            color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            font-family: monospace;
+        }
+        .thisIsTheMiddleOfThePageAndIncreasesTheAestheticAppeal {
+            padding: 10px;
+            background: #2a2a2a;
+            box-shadow: 11px 11px 0 0 #000000;
+        }
+        form { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        input[type=text]{
+            background: #000000;
+            color: #ffffff;
+            border: 1px solid #333;
+            font: inherit;
+            font-size: 1.5rem;
+            padding: 0.4rem 0.6rem;
+            width: 28rem; 
+            outline:none;
+        }
+        input[type=text]:focus {
+            border-color:#6a6a6a;
+        }
+        .sv_radioset {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            font-size: 1rem;
+            color: #888888;
+            width: 100%;
+        }
+        .sv_radioset label{
+            cursor: pointer;
+        }
+        .sv_settings {
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            font-size: 1rem;
+            color: #888888;
+            width: 100%;
+        }
+        a {
+            
+        }
+    </style>
+</head>
+<body>
+    <div class = "thisIsTheMiddleOfThePageAndIncreasesTheAestheticAppeal">
+        <form onsubmit="return sv_go(this)">
+            <input type="text" name="sv_query" autofocus autocomplete="off" spellcheck="false">
+            <div class="sv_radioset">
+                <label><input type="radio" name="sv_searchradio" value="svradioin_address"> addrbar</label>
+                <label><input type="radio" name="sv_searchradio" value="svradioin_google" checked> google</label>
+                <label><input type="radio" name="sv_searchradio" value="svradioin_wiki"> wikipedia</label>
+            </div>
+            <div class="sv_settings">
+                <a href="#" id="sv_setdefault">setdefault</a>
+                <label><input type="checkbox" id="sv_autosave"> autosave</label>
+            </div>
+        </form>
+    </div>
+    <script>
+        function sv_go(sv_form){
+            var radiovalue = sv_form.sv_query.value.trim();
+            if (!radiovalue) return false;
+            var radiotext = encodeURIComponent(radiovalue);
+            if (sv_form.sv_searchradio.value == 'svradioin_address')
+                location = radiovalue.indexOf('://') > 0 ? radiovalue : 'https://' + radiovalue;
+            else if (sv_form.sv_searchradio.value == 'svradioin_wiki')
+                location = 'https://en.wikipedia.org/w/index.php?search=' + radiotext;
+            else if (sv_form.sv_searchradio.value == 'svradioin_google')
+                location = 'https://www.google.com/search?q=' + radiotext;
+            else
+                location = 'https://www.google.com/search?q=' + radiotext;
+            return false;
+        }
+        var sv_key = 'sv_searchradio';
+        try {
+            sv_saved = localStorage.getItem(sv_key) || sessionStorage.getItem(sv_key) || sv_saved;
+            var sv_r = document.querySelector('input[name="sv_searchradio"][value="' + sv_saved + '"]');
+            if (sv_r) sv_r.checked = true;
+        } catch (e) {
+            if (e.name !== 'SecurityError') throw e;
+            console.log("SecurityError");
+        }
+        
+        document.querySelectorAll('input[name="sv_searchradio"]').forEach(function(r){
+            r.addEventListener('change', function(){
+                if (document.getElementById('sv_autosave').checked) {
+                    localStorage.setItem(sv_key, r.value);
+                    sessionStorage.setItem(sv_key, r.value);
+                }
+            });
+        });
+        document.getElementById('sv_setdefault').addEventListener('click', function(e){
+        e.preventDefault();
+        var v = document.querySelector('input[name="sv_searchradio"]:checked').value;
+        localStorage.setItem(sv_key, v);
+        sessionStorage.setItem(sv_key, v);
+});
+    </script>
+</body>
+</html>
